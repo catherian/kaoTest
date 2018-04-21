@@ -1,19 +1,16 @@
 language: node_js
 node_js:
 - 7.5.0
-- '8'
-before_script: npm install
-script: npm run test
+after_script:
+npm test
+- scp -o StrictHostKeyChecking=no ./src/app.js yideng:/root/code
 before_install:
 - openssl aes-256-cbc -K $encrypted_ff67dc30d4dc_key -iv $encrypted_ff67dc30d4dc_iv
   -in znn_key.enc -out ~/znn_key -d
-  # 添加如下两行内容，Host后面的ip替换成你的部署服务器地址123
-  - chmod 600 ~/.ssh/id_rsa
-  - eval $(ssh-agent)
-  - ssh-add ~/.ssh/id_rsa
-  - cp .travis/ssh_config ~/.ssh/config
-  - echo -e "Host 122.114.119.66\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
-after_script:
-  npm test
-  - scp -o StrictHostKeyChecking=no ./app.js yideng:/root/code
+- mv znn_key ~/.ssh -f
+- chmod 600 ~/.ssh/znn_key
+- eval $(ssh-agent)
+- ssh-add ~/.ssh/znn_key
+- cp .travis/ssh_config ~/.ssh/config
+
 

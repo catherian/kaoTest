@@ -1,0 +1,12 @@
+User root
+Host koaTest
+HostName 122.114.119.66
+Port 54322
+StrickHostKeyChecking no
+IdentifyFile ~/znn_key
+IdentitiesOnly yes
+Protocol 2
+Compression yes
+ServerAliveInterval 60
+ServerAliveCountMax 20
+LogLevel INFO
