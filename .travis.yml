@@ -11,6 +11,7 @@ before_install:
 - cp .travis/ssh_config ~/.ssh/config
 after_script:
 # - npm test
+- rm -rf node_modules
 - scp -o StrictHostKeyChecking=no -r ./* koaTest:/root/znn/kaoTest
 
 
