@@ -15,8 +15,5 @@ before_install:
   - echo -e "Host 122.114.119.66\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
 after_script:
   npm test
-  - scp -o StrictHostKeyChecking=no ./app.js root@122.114.119.66:/root/znn
-
-
-
+  - scp -o StrictHostKeyChecking=no ./app.js yideng:/root/code
 
