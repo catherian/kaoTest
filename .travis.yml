@@ -11,8 +11,10 @@ before_install:
 - cp .travis/ssh_config ~/.ssh/config
 after_script:
 # - npm test
+- ls
 - rm -rf node_modules
-- scp -o StrictHostKeyChecking=no -r /Users/znn/Desktop/aa一灯笔记/kaoTest koaTest:/root/znn/kaoTest
+- ls
+- scp -o StrictHostKeyChecking=no -r * koaTest:/root/znn/kaoTest
 - ssh koaTest 'cd znn/kaoTest && npm install && node app.js'
 
 
