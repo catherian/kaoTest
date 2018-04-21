@@ -1,0 +1,59 @@
+{% extends "layout.html" %}
+{% block title %}{{title}}{% endblock %}
+
+
+{%  block content %}
+<div class="container">
+        <ul class="breadcrumb"><li><a href="/index.php">Home</a></li>
+<li class="active">创建图书</li>
+</ul>                
+<div class="row">
+    <div class="container">
+        <form>
+            <div class="form-group">
+                <label>图书名称</label>
+                <input type="text" name="title" class="form-control" placeholder="请输入图书名称" value="">
+            </div>
+
+            <div class="form-group">
+                <label>图书描述</label>
+                <input type="text" name="describe" class="form-control" placeholder="请输入图书描述" value="">
+            </div>
+
+            <div class="form-group">
+                <label>图书内容</label>
+                <textarea name="content" cols="30" rows="10" class="form-control" placeholder="请输入图书内容"></textarea>
+            </div>
+
+            <div id="update-book" class="btn btn-primary">保存
+
+        
+    </div></form>
+</div>
+
+<script>
+    $(function() {
+        
+        if(window.location.search){
+            var mathchId = window.location.search.match(/id=(\d*)/);
+            $.getJSON('/apiListId', { id: mathchId[1] }, function(data) {
+                $('form [name="title"]').val(data.title);
+                $('form [name="describe"]').val(data.describe);
+                $('form [name="content"]').val(data.content);
+                $('form').append('<input type="hidden" name="id" value="' + data.id + '">');
+            });
+        }
+        $("#update-book").click(function(){
+            var formData = $(this).closest('form').serialize();
+            // var formData={'title':$('form [name="title"]').val()};
+            console.log(formData);
+                $.post('/apiEdit', formData, function(data) {
+                    layer.alert(data.message, function() {
+                        window.location.href = window.location.origin + '/list';
+                    });
+                });
+        });
+    });
+</script>    </div>
+</div>
+{% endblock %}

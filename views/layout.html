@@ -1,0 +1,33 @@
+<html>
+<head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>{% block title %}{% endblock %}
+
+        </title>
+        <script src="//cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+        <script src="//cdn.bootcss.com/layer/3.1.0/layer.js"></script><link rel="stylesheet" href="http://cdn.bootcss.com/layer/3.1.0/theme/default/layer.css?v=3.1.0" id="layuicss-layer">
+        <!-- <script src="public/scripts/common.js"></script> -->
+        <link href="public/stylesheets/bootstrap.css" rel="stylesheet">
+        <link href="public/stylesheets/site.css" rel="stylesheet">
+</head>
+<body>
+    <div class="wrap">
+        <nav id="w0" class="navbar-inverse navbar-fixed-top navbar"><div class="container"><div class="navbar-header"><button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#w0-collapse"><span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span></button><a class="navbar-brand" href="/">My Application</a></div><div id="w0-collapse" class="collapse navbar-collapse"><ul id="w1" class="navbar-nav navbar-right nav"><li class="active"><a href="/">首页</a></li>
+        <li><a href="/list">图书列表</a></li>
+        <li><a href="/login">登录</a></li></ul></div></div></nav>
+        
+            {%  block content %}
+            <p>这是我用来填充的内容。</p>
+            {% endblock %}
+    </div>
+    <footer class="footer">
+        <div class="container">
+            <p class="pull-left">© 靠谱图书管理系统 2018</p>
+        </div>
+    </footer>
+</html>

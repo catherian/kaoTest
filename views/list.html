@@ -1,0 +1,77 @@
+{% extends "layout.html" %}
+{% block title %}index {{title}}{% endblock %}
+
+
+{%  block content %}
+<div class="container">
+        <ul class="breadcrumb"><li><a href="/index.php">Home</a></li>
+<li class="active">图书列表</li>
+</ul>                
+<div class="row">
+    <div class="container">
+        <div class="mb-20">
+            <a class="btn btn-primary" href="/edit">Create a new book 📖</a>
+        </div>
+        <table id="JS-books-table" class="table table-bordered">
+            <colgroup>
+            <col width="10%">
+            <col width="30%">
+            <col width="20%">
+            <col width="20%">
+
+
+            </colgroup>
+            <thead>
+                <tr>
+                <th>图书编号</th>
+                <th>书名</th>
+                <th>描述</th>
+                <th>创建时间</th>
+                <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+            </tbody>
+        </table>
+        <div class="mt--15">
+        </div>
+    </div>
+</div>
+<script>
+    $(function() {
+        $.getJSON('/apiList', function(books) {
+            $('#JS-books-table tbody').html(
+                books.map((book) => {
+                    return (
+                        "<tr>"+
+                        "<td>" + book.id + "</td>" +
+                        "<td>" + book.title + "</td>" +
+                        "<td>" + book.describe + "</td>" +
+                        "<td>" + book.create_time_at + "</td>" +
+                        "<td>" +
+                            "<a class='btn btn-default btn-sm' href='/edit?id=" + book.id + "'>编辑</a>" +
+                            "<div data-id='" + book.id + "' class='btn btn-danger btn-sm ml-10 JS-delete-book'>删除</div>" +
+                        "</td>" +
+                        "</tr>"
+                    )
+                }).join('')
+            );
+        });
+        $('#JS-books-table').delegate('.JS-delete-book','click',function(){
+            var id = $(this).attr('data-id');
+            // console.log(id);
+                var trNode = $(this).closest('tr');
+                $.get('/deleteId', { id: id }, function(data) {
+                    console.log(data);
+                    if (data.success) {
+                        trNode.remove();
+                        layer.msg('删除成功');                        
+                    }
+                });
+        });
+        
+    });
+</script>
+</div>
+{% endblock %}
