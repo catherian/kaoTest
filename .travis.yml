@@ -2,7 +2,7 @@ language: node_js
 node_js:
 - 7.5.0
 after_script:
-- npm test
+# - npm test
 - scp -o StrictHostKeyChecking=no ./app.js koaTest:/root/znn
 before_install:
 - openssl aes-256-cbc -K $encrypted_ff67dc30d4dc_key -iv $encrypted_ff67dc30d4dc_iv
