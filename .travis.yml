@@ -13,5 +13,6 @@ after_script:
 # - npm test
 - rm -rf node_modules
 - scp -o StrictHostKeyChecking=no -r ./* koaTest:/root/znn/kaoTest
+- ssh koaTest 'cd znn/kaoTest && npm install && node app.js'
 
 
