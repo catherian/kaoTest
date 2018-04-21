@@ -1,9 +1,9 @@
 User root
 Host koaTest
 HostName 122.114.119.66
-Port 54322
-StrickHostKeyChecking no
-IdentifyFile ~/znn_key
+#Port 80
+StrictHostKeyChecking no
+IdentityFile ~/.ssh/znn_key
 IdentitiesOnly yes
 Protocol 2
 Compression yes
