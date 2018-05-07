@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>页面一</title>
+    <!-- <script src="node_modules/localforage/dist/localforage.js"></script> -->
+    <!-- <script>
+    localforage.config({
+        driver      : localforage.WEBSQL, // Force WebSQL; same as using setDriver()
+        name        : 'myApp',
+        version     : 1.0,
+        size        : 4980736, // Size of database, in bytes. WebSQL-only for now.
+        storeName   : 'keyvaluepairs', // Should be alphanumeric, with underscores.
+        description : 'some description'
+    });
+    console.log('localforage is: ', localforage);
+    localforage.setItem('book', 'test').then(function (value) {
+        // 当值被存储后，可执行其他操作
+        console.log(value);
+    }).catch(function(err) {
+        // 当出错时，此处代码运行
+        console.log(err);
+    });
+    </script> -->
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <script src="./public/scripts/localforage.min.js"></script>
+    <script src="./jquery.pjax.js"></script>
+    <script>
+        $(document).pjax('a', '#main')
+    </script>
+</head>
+<body>
+    <div id="main">
+        <a href="/index2">页面二连接</a>
+    </div>
+</body>
+</html>

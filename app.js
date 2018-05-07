@@ -6,6 +6,9 @@ const path=require('path');
 const co=require('co');
 const axios=require('axios');
 const bodyParser = require('koa-body');
+const swig = require('swig');
+const cheerio = require('cheerio');
+const fs = require("fs");
 var app = new Koa();
 var router = new Router();
 
@@ -25,10 +28,39 @@ app
   .use(router.allowedMethods());
   // GET request for remote image
 router
-  .get('/', async(ctx, next) => {
+.get('/', async(ctx, next) => {
+  if (ctx.headers['x-pjax'])
+      // ctx.body="<a href= "+index2+">Hello koa now</a ><x-frankenstein></x-frankenstein>";
+      ctx.body=await ctx.render("index.html",{
+        title:'测试页'
+      });
+  else{
     ctx.body=await ctx.render("index.html",{
       title:'图书管理系统-首页'
     });
+  }
+})
+  .get('/index2', async(ctx, next) => {
+    if (ctx.headers['x-pjax']){
+      // ctx.body="<a href= "+index2+">Hello koa now</a ><x-frankenstein></x-frankenstein>";
+      // console.log(ctx.render("index.html"));
+      // ctx.body=await ctx.render("index.html",{
+      //   title:'测试页'
+      // });
+      //console.log('pjax');
+      // console.log(ctx.request.header);
+      let selector = ctx.request.header['x-pjax-container'];
+      let html = get_html('./index.html', selector, {
+          username: 'koa'
+      });
+      ctx.body = html;
+    }
+    else{
+      ctx.body=await ctx.render("index0.html",{
+        title:'图书管理系统-首页'
+      });
+    }
+    
     // ctx.body = 'Hello 1111';
   })
   .get('/list', async(ctx, next) => {
@@ -122,6 +154,43 @@ router
 // app.on('error', err => {
 //   log.error('server error', err)
 // });
+function get_html(_path, selector, options) {
+  let template = swig.compileFile(path.join(__dirname, './views', _path));
+  let rendered = template(options);
+
+  let $ = cheerio.load(rendered);
+  let scripts = rendered.match(/<script type="text\/javascript" src=[\s\S]+?<\/script>/g);
+  let styles = rendered.match(/<link href=[\s\S]+? rel="stylesheet">/g);
+  let html = $(selector).html();
+  console.log(scripts);
+  styles.map(style => {
+      let first = style.indexOf('href=') + 6;
+      let src = style.substring(first);
+      let last = src.indexOf('\"');
+      src = src.substring(0, last);
+      let data = fs.readFileSync(path.join(__dirname, './', src), "utf-8");
+      html = html + `<style type="text/css">${data}</style>`;
+  });
+  if(scripts){
+    scripts.map(script => {
+      let first = script.indexOf('src=') + 5;
+      let src = script.substring(first);
+      let last = src.indexOf('\"');
+      src = src.substring(0, last);
+      // 写缓存：1 拼页面； 2 webpack编译时，写入； 
+      let data = fs.readFileSync(path.join(__dirname, './', src), "utf-8");
+      html = html + `<script type="text/javascript">${data}</script>`;
+      for(var i=0;i<scripts.length;i++){
+        // id , 文件名 ，hash值 ，src
+        html = html + `<script type="text/javascript">// 通过 localForage 完成同样功能
+        localforage.setItem('key', 'value');</script>`;
+      }
+      
+    });
+  }
+  // console.log(html);
+  return html;
+}
 app.listen(3000,()=>{
   console.log("Server Started!");
 });
